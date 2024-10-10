@@ -4,11 +4,24 @@ from LDA import LDAClassifier, iris_data_split
 
 
 def main():
+    data1_dict, data2_dict = iris_data_split().feature_selection_and_split([0,1,2,3])
+    test_data = data2_dict[2] + data2_dict[3]
+    y_test = [2] * len(data2_dict[2]) + [3] * len(data2_dict[3])
+    show_roc(data1_dict, test_data, y_test)
+
     data1_dict, data2_dict = iris_data_split().feature_selection_and_split([0,1])
     test_data = data2_dict[2] + data2_dict[3]
     y_test = [2] * len(data2_dict[2]) + [3] * len(data2_dict[3])
-    # 訓練邏輯迴歸分類器
-    model = LDAClassifier(p_label = 3, n_label = 2, cp=1, cn=1, p_train=data1_dict[3], n_train = data1_dict[2])
+    show_roc(data1_dict, test_data, y_test)
+
+    data1_dict, data2_dict = iris_data_split().feature_selection_and_split([2,3])
+    test_data = data2_dict[2] + data2_dict[3]
+    y_test = [2] * len(data2_dict[2]) + [3] * len(data2_dict[3])
+    show_roc(data1_dict, test_data, y_test)
+
+
+def show_roc(train_data, test_data, y_test):
+    model = LDAClassifier(p_label = 3, n_label = 2, cp=1, cn=1, p_train=train_data[3], n_train = train_data[2])
     model.fit()
     y_scores = model.get_scores(test_data)
     fpr, tpr, thresholds = roc_curve(y_test, y_scores,pos_label=3)# 計算 ROC 曲線的 FPR, TPR
@@ -25,6 +38,8 @@ def main():
     plt.title('Receiver Operating Characteristic')
     plt.legend(loc="lower right")
     plt.show()
+
+
 
 if __name__ == "__main__":
     main()

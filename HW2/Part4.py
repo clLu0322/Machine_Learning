@@ -1,4 +1,5 @@
 from LDA import LDAClassifier, iris_data_split
+import os
 
 def main():
     data1_dict, data2_dict = iris_data_split().feature_selection_and_split([2,3])
@@ -50,5 +51,5 @@ def predict(train_dict, test_dict):
 
 if __name__ == "__main__":
     main()
-            
+    os.system("pause")
                 
